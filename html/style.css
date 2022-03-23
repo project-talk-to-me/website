@@ -5,6 +5,7 @@ html {
 }
 body {
     font-family: sans-serif;
+    background-color: #ffd700;
     margin: 0;
     padding: 0;
 }
@@ -34,6 +35,12 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+.bg-blue .placeholder {
+    border-color: #fff;
+}
+.bg-yellow .placeholder {
+    border-color: #0057b7;
 }
 .placeholder.small {
     height: 3em;
