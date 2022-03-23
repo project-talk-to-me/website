@@ -1,0 +1,65 @@
+/************* General Attributes *************/
+body {
+    font-family: sans-serif;
+    margin: 0;
+}
+.center > * {
+    margin: 0 auto;
+    max-width: 700pt;
+}
+.bg-yellow {
+    background-color: #ffd700;
+    color: #0057b7;
+}
+.bg-yellow a, .bg-yellow a:visited {
+    color: #000;
+    color: #0057b7;
+    font-weight: bold;
+}
+.bg-blue {
+    background-color: #0057b7;
+    color: #fff;
+}
+.placeholder {
+    width: 100%;
+    border: 2px dashed black;
+    padding: 0.5em;
+    margin: 0.5em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.placeholder.small {
+    height: 3em;
+}
+.placeholder.medium {
+    height: 10em;
+}
+.placeholder.large {
+    height: 30em;
+}
+
+/************* Header *************/
+header {
+    font-size: 18pt;
+    padding: 10pt 0;
+    word-spacing: 10pt;
+}
+header a, header a:visited {
+    text-decoration: none;
+    font-size: 110%;
+    word-spacing: normal;
+}
+.language-select {
+    float: right;
+}
+
+/************* Body *************/
+main {
+    padding: 2em;
+}
+
+/************* Footer *************/
+footer {
+    padding: 2em 0;
+}
