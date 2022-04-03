@@ -43,7 +43,7 @@ import re
 import sys
 from subprocess import Popen, PIPE, call
 
-PATTERN_GET = r'(<!--\s*get\s+(\w+)\s+from\s+([^\s]+)\s*-->\n?)(.*?)(<!--\s*/get\s*-->)'
+PATTERN_GET = r'(<!--\s*get\s+([\w_-]+)\s+from\s+([^\s]+)\s*-->\n?)(.*?)(<!--\s*/get\s*-->)'
 PATTERN_RUN = r'(<!--\s*run\s+(.*?)\s*-->(\n?))(.*?)(<!--\s*/run\s*-->)'
 PATTERN_RELATIVE = r'(<!--\s*relative\s*-->\n?)(.*?)(<!--\s*/relative\s*-->)'
 PATTERN_GETURL = r'href="([^"]+?\.[^"]+?)"'
