@@ -1,4 +1,4 @@
-module github.com/talktome/website
+module github.com/project-talk-to-me/website
 
 go 1.18
 
