@@ -1,10 +1,9 @@
-name: Deploy
-on: [push, pull_request]
+name: Actions
+on: push
 jobs:
   test:
     name: "test"
     runs-on: ubuntu-latest
-    if: github.event_name == 'push'
     steps:
      - uses: actions/checkout@v3
      - uses: actions/setup-go@v3
@@ -12,9 +11,9 @@ jobs:
          go-version: '1.18.1' # The Go version to download (if necessary) and use.
      - run: go test .
   deploy:
-    name: "Deploy website"
+    name: "deploy"
     runs-on: ubuntu-latest
-    if: github.event_name == 'push' && github.ref == 'refs/heads/live' && 1 == 0
+    if: github.ref == 'refs/heads/live'
     needs: test
     steps:
       - name: Configure SSH
@@ -35,11 +34,11 @@ jobs:
           SSH_HOST: ${{ secrets.LIVE_SSH_HOST }}
 
       - name: Stop the server
-        run: ssh staging 'sudo systemctl stop website'
+        run: ssh staging 'sudo supervisorctl stop website'
 
       - name: Check out the source
-        run: ssh staging 'cd my-application && git fetch && git reset --hard origin/master'
+        run: ssh staging 'cd website && git fetch && git reset --hard origin/live'
 
       - name: Start the server
         if: ${{ always() }}
-        run: ssh staging 'sudo systemctl start website'
+        run: ssh staging 'sudo supervisorctl start website'
