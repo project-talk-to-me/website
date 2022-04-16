@@ -13,7 +13,7 @@ jobs:
   deploy:
     name: "deploy"
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/live'
+    # if: github.ref == 'refs/heads/live'
     needs: test
     steps:
       - name: Configure SSH
