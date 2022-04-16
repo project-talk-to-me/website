@@ -2,7 +2,7 @@ name: Deploy
 on: [push, pull_request]
 jobs:
   test:
-    name: "Test go code"
+    name: "test"
     runs-on: ubuntu-latest
     if: github.event_name == 'push'
     steps:
