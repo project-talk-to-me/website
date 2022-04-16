@@ -1,17 +1,45 @@
-name: GitHub Actions Demo
-on: [push]
+name: Deploy
+on: [push, pull_request]
 jobs:
-  Explore-GitHub-Actions:
+  test:
+    name: "Test go code"
     runs-on: ubuntu-latest
+    if: github.event_name == 'push'
     steps:
-      - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
-      - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
-      - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
-      - name: Check out repository code
-        uses: actions/checkout@v3
-      - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
-      - run: echo "🖥️ The workflow is now ready to test your code on the runner."
-      - name: List files in the repository
+     - uses: actions/checkout@v3
+     - uses: actions/setup-go@v3
+       with:
+         go-version: '1.18.1' # The Go version to download (if necessary) and use.
+     - run: go test .
+  deploy:
+    name: "Deploy website"
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/live' && 1 == 0
+    needs: test
+    steps:
+      - name: Configure SSH
         run: |
-          ls ${{ github.workspace }}
-      - run: echo "🍏 This job's status is ${{ job.status }}."
+          mkdir -p ~/.ssh/
+          echo "$SSH_KEY" > ~/.ssh/staging.key
+          chmod 600 ~/.ssh/staging.key
+          cat >>~/.ssh/config <<END
+          Host staging
+            HostName $SSH_HOST
+            User $SSH_USER
+            IdentityFile ~/.ssh/staging.key
+            StrictHostKeyChecking no
+          END
+        env:
+          SSH_USER: ${{ secrets.LIVE_SSH_USER }}
+          SSH_KEY: ${{ secrets.LIVE_SSH_KEY }}
+          SSH_HOST: ${{ secrets.LIVE_SSH_HOST }}
+
+      - name: Stop the server
+        run: ssh staging 'sudo systemctl stop website'
+
+      - name: Check out the source
+        run: ssh staging 'cd my-application && git fetch && git reset --hard origin/master'
+
+      - name: Start the server
+        if: ${{ always() }}
+        run: ssh staging 'sudo systemctl start website'
