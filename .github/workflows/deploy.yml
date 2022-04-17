@@ -1,20 +1,12 @@
-name: Actions
-on: push
+name: Deploy
+on:
+  pull_request:
+    branches: [live]
+    types: [closed]
 jobs:
-  test:
-    name: "test"
-    runs-on: ubuntu-latest
-    steps:
-     - uses: actions/checkout@v3
-     - uses: actions/setup-go@v3
-       with:
-         go-version: '1.18.1' # The Go version to download (if necessary) and use.
-     - run: go test .
   deploy:
     name: "deploy"
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/live'
-    needs: test
     steps:
       - name: Configure SSH
         run: |
@@ -34,11 +26,11 @@ jobs:
           SSH_HOST: ${{ secrets.LIVE_SSH_HOST }}
 
       - name: Stop the server
-        run: ssh staging 'sudo supervisorctl stop website'
+        run: ssh staging 'supervisorctl stop goserver'
 
       - name: Check out the source
         run: ssh staging 'cd website && git fetch && git reset --hard origin/live'
 
       - name: Start the server
         if: ${{ always() }}
-        run: ssh staging 'sudo supervisorctl start website'
+        run: ssh staging 'supervisorctl start goserver'
