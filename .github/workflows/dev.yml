@@ -1,8 +1,0 @@
-name: Dev
-on:
-  pull_request_target:
-    branches:
-      - dev
-jobs:
-  test:
-    uses: ./.github/workflows/test.yml
