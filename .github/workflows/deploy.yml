@@ -1,20 +1,10 @@
-name: Actions
-on: push
+name: Deploy
+on:
+  workflow_call:
 jobs:
-  test:
-    name: "test"
-    runs-on: ubuntu-latest
-    steps:
-     - uses: actions/checkout@v3
-     - uses: actions/setup-go@v3
-       with:
-         go-version: '1.18.1' # The Go version to download (if necessary) and use.
-     - run: go test .
   deploy:
     name: "deploy"
     runs-on: ubuntu-latest
-    # if: github.ref == 'refs/heads/live'
-    needs: test
     steps:
       - name: Configure SSH
         run: |
