@@ -5,5 +5,4 @@ on:
       - dev
 jobs:
   test:
-    - uses: ./github/workflows/test.yml@dev
-
+    - uses: ./github/workflows/test.yml
