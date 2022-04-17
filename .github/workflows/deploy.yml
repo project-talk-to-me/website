@@ -26,11 +26,11 @@ jobs:
           SSH_HOST: ${{ secrets.LIVE_SSH_HOST }}
 
       - name: Stop the server
-        run: ssh staging 'supervisorctl stop goserver'
+        run: ssh staging 'supervisorctl stop website'
 
       - name: Check out the source
         run: ssh staging 'cd website && git fetch && git reset --hard origin/live'
 
       - name: Start the server
         if: ${{ always() }}
-        run: ssh staging 'supervisorctl start goserver'
+        run: ssh staging 'supervisorctl start website'
