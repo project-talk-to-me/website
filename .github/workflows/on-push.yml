@@ -1,7 +1,8 @@
 name: On push
-on: push
-#  branches-ignore:
-#    - live
+on:
+  push:
+    branches-ignore:
+      - live
 jobs:
   test:
     uses: ./.github/workflows/test.yml
