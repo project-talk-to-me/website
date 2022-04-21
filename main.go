@@ -6,11 +6,13 @@ import (
 	"os"
 
 	"github.com/go-chi/chi"
+	"github.com/go-chi/chi/middleware"
 )
 
 func main() {
 	r := chi.NewRouter()
 
+	r.Use(middleware.Logger)
 	r.Get("/", getFile("./flyer/index.html"))
 	r.Get("/index.html", getFile("./html/index.html"))
 	r.Get("/*", getDir("./html/"))
